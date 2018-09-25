@@ -1,4 +1,5 @@
 import nltk
+from nltk import ConfusionMatrix
 
 basetreinamento = [
 ('este trabalho e agradável','alegria'),
@@ -848,7 +849,33 @@ baseCompletaTeste = nltk.classify.apply_features(extractWords, fraseComStemmingT
 
 classificador = nltk.NaiveBayesClassifier.train(baseCompletaTreinamento)
 
-print(nltk.classify.accuracy(classificador, baseCompletaTreinamento))
+print(nltk.classify.accuracy(classificador, baseCompletaTeste))
+
+#aula 33
+errors = []
+
+for (frase, classe) in baseCompletaTeste:
+    resultado = classificador.classify(frase)
+
+    if resultado != classe:
+        errors.append((classe, resultado, frase))
+
+#aula 34
+#Matriz de Confusão
+
+esperado = []
+previsto = []
+
+for (frase, classe) in baseCompletaTeste:
+    resultado = classificador.classify(frase)
+    previsto.append(resultado)
+    esperado.append(classe)
+
+matrix = ConfusionMatrix(esperado, previsto)
+print(matrix)
+
+
+
 
 
 
